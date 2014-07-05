@@ -1,4 +1,6 @@
 //io existe a partir de que importamos socket.io.js
+
+//Prueba de modificación para enviar cambio al github
 var socket = io.connect("http://localhost:8081");
 
 socket.on("actualiza-contador",function(datosServidor){
