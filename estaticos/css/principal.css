@@ -1,0 +1,250 @@
+/* ------ genericas ----------------*/
+body {
+	font-size: 20px;
+	/*EN LA ACTUALIDAD PONEMOS AL FINAL DE FUENTES
+	 AL FINAL PARA EVITAR FOUC
+	 */
+	font-family: 'Lato', sans-serif;
+}
+
+/*-- definir imagenes y videos flexibles */
+.flexible {
+	max-width: 100%;
+}
+
+figure {
+	margin-top: 0px;
+}
+
+/*USAMOS EL PSEUDO SELECTOR :invalid */
+input:required:invalid {
+	background: url("/estaticos/imagenes/incorrecto.png");
+	background-repeat: no-repeat;
+	background-size: 20px;
+	background-position: right top;
+}
+
+/*USAMOS EL PSEUDO SELECTOR :valid */
+input:required:valid {
+	background: url("/estaticos/imagenes/correcto.png");
+	background-repeat: no-repeat;
+	background-size: 20px;
+	background-position: right top;
+}
+
+/* --------------------- HEADER ---------------*/
+/* SELECTOR DE ETIQUETAS */
+header {
+	background-color: #e95644;
+	/*background-color:rgb(255,0,0);*/
+	/*background-color:rgba(255,0,0,0.5);*/
+	color: white;
+}
+
+header ul {
+	margin: 0px;
+}
+
+header li {
+	display: inline-block;
+	padding: 1em;
+}
+
+/* --------------------- PRESENTACION --------------*/
+#presentacion {
+	background: url("../imagenes/portadas/portada4.jpg");
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center center;
+	background-attachment: fixed;
+	color: white;
+	font-size: 1.5em;
+	height: 15em;
+	line-height: 15em;
+	text-align: center;
+}
+
+/* --------------------- SERVICIOS ---------------*/
+
+#servicios {
+	/* EL TEXT-ALIGN CENTRA ELEMENTOS DE LINEA
+	 Y DE LINEA-BLOQUE*/
+	text-align: center;
+	padding-top: 3em;
+	padding-bottom: 3em;
+}
+
+/* SELECTOR DE CLASES*/
+.nombre-servicio {
+	/* funciona solo para elemenos
+	 de linea o bloque-linea
+	 */
+	text-align: center;
+}
+
+.servicio {
+	display: inline-block;
+	width: 33%;
+}
+
+/* ESTE ES EL ESTADO INICIAL*/
+.servicio img {
+	-webkit-transition: 1s all ease;
+	-moz-transition: 1s all ease;
+	-o-transition: 1s all ease;
+	transition: 1s all ease;
+}
+
+/* ESTE ESL EL ESTADO FINAL*/
+.servicio img:hover {
+	/* safari, chrome */
+	/*-webkit-transform:rotate(-45deg);*/
+	-webkit-transform: scale(1.5);
+}
+
+/* --------------------- TESTIMONIOS ---------------*/
+/* SELECTOR DE ID */
+#testimonios {
+	background-color: #454545;
+	color: white;
+	border-bottom: 0.3em solid #e95644;
+	padding-top: 3em;
+	padding-bottom: 3em;
+}
+
+.testimonio {
+	display: inline-block;
+	vertical-align: top;
+	width: 49%;
+}
+
+/*------------------FOOTER --------------------*/
+
+footer {
+	background-color: rgb(52, 52, 52);
+	color: white;
+}
+
+#sociales, #suscribir {
+	display: inline-block;
+	width: 49%;
+}
+
+/*SELECTOR DE DESCENDIENTES */
+#sociales img {
+	margin-top: 1em;
+}
+
+/*------------------ SOLUCION EJERCICIO ---------------------------*/
+#sociales img {
+	-o-transition: all 0.5s ease;
+	-webkit-transition: all 0.5s ease;
+	-ms-transition: all 0.5s ease;
+	transition: all 0.5s ease;
+}
+
+#sociales img:hover {
+	-o-transform: rotate(180deg);
+	-webkit-transform: rotate(180deg);
+	-moz-transform: rotate(180deg);
+	transform: rotate(180deg);
+}
+
+#suscribir-email {
+	color: black;
+	/* PREFIJOS DEL VENDEDOR*/
+	/*
+	 PRIMER VALOR:DURACION EN SEGUNDOS
+	 SEGUNDO: QUE PROPIEDAD VAN ANIMAR
+	 TERCER: QUE FUNCION DE ANIMACION VAN A UTILIZAR
+	 SE ANIMA USANDO UNA CURVA DE BEZIER
+	 - lineal
+	 - ease
+	 - ease-out
+	 - ease-in
+	 */
+	-moz-transition: 1s all ease;
+	-o-transition: 1s all ease;
+	-ms-transition: 1s all ease;
+	-webkit-transition: 1s all ease;
+	transition: 1s all ease;
+	width: 60%;
+}
+
+/*FOCUS ME PERMITE SABER CUANDO ALGUIEN ESTA ESCRIBIENDO EN LA CAJA*/
+#suscribir-email:focus {
+	width: 80%;
+}
+
+/*USAMOS SELECTOR DE DESCENDIENTES + SELECTOR DE ATRIBUTOS*/
+#suscribir input[type="submit"] {
+	color: black;
+}
+
+/* ----------------------- CHAT -------------------*/
+
+#chat {
+	width: 80%;
+	background-color: #3b3b3b;
+	padding: 1.5em;
+	margin: 2em auto 2em auto;
+}
+
+#chat h1 {
+	text-align: center;
+}
+
+#chat h1, #chat h4, #chat p {
+	color: white;
+}
+
+#mensajes, #mensaje-usuario, #nombre-usuario {
+	background-color: white;
+	color: black;
+	min-height: 1em;
+}
+
+.mensaje {
+	padding: 5px;
+	border-bottom: 1px #3b3b3b solid;
+}
+
+.mensaje span {
+	color: red;
+}
+
+#mensaje-usuario {
+	padding: 0px;
+	width: 100%;
+	border-width: 0px;
+	margin-bottom: 3px;
+}
+
+/*Inicia diseño responsivo*/
+/**/
+@media screen and (max-width:900px){
+	.testimonio{
+		width:100%;
+	}
+}
+
+@media screen and (max-width:750px){
+	#sociales, #suscribir {
+		text-align:center;
+		width: 100%;
+	}	
+}
+
+
+@media screen and (max-width:400px){
+	header li{
+		width: 100%;
+	}
+}
+
+@media screen and (max-width:890px){
+	.servicio{
+		width:100%;
+		text-align:center;
+	}
+}

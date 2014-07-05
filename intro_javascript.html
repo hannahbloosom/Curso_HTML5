@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+	<head lang="es">
+		<meta charset="utf-8"/>
+		<title>JavaScript intro</title>
+		<script>
+			//JAVASCRIPT ES UN LENGUAJE
+			//BASADO EN PROGRAMACION FUNCIONAL
+			//scheme
+			//NO TIPADO
+			var nombre = "ismael";
+			var edad = 28.5;
+
+			//javascript del lado del cliente
+			//JAVASCRIPT USA EL TIPO DE DATO FLOAT
+			//IEE754
+			//TODOS LOS NUMEROS SON DE TIPO FLOAT
+			//DE TODOS LOS LENGUAJES
+			//big decimal >> mucha memoria!!
+
+			function calculaAreaCuadrado(lado) {
+
+				return lado * lado;
+			}
+
+			//PUEDEN GUARDAR FUNCIONES
+			//EN VARIABLES
+			//FUNCION ANONIMA (LAMBDAS)
+			var calculaAreaCirculo = function(radio) {
+				return 3.14 * radio * radio;
+			};
+
+			function calculaArea(miFuncion, parametro1) {
+
+				var resultado = miFuncion(parametro1);
+
+				return resultado;
+			}
+
+			//alert(calculaArea(calculaAreaCuadrado, 1));
+
+			//PRIMERA FORMA DE DECLARAR UN OBJETO EN JAVASCRIPT
+			//HERENCIA DE PROTOTIPOS
+			//PUEDEN EMULAR USANDO HERENCIA PROTOTIPOS
+			// PARADIGMA ORIENTADO A OBJETOS
+			var persona = new Object();
+
+			persona.nombre = "ismael";
+			persona.hablar = function() {
+				alert("hola soy:" + this.nombre);
+			};
+
+			//persona.hablar();
+
+			//FORMA 2 DE DECLARAR OBJETOS
+			//JAVASCRIPT OBJECT LITERAL
+			var persona2 = {
+				nombre : "ismael",
+				hablar : function() {
+					alert("hola soy :" + this.nombre);
+				},
+				hermano : {
+					nombre : "juan",
+					hablar : function() {
+						//CLOSURE
+						persona2.hablar();
+					}
+				}
+			};
+
+			persona2.hermano.hablar();
+
+		</script>
+	</head>
+	<body>
+		<!-- nada de contenido -->
+	</body>
+</html>
+
