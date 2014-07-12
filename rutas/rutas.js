@@ -1,4 +1,6 @@
 /*module.exports = DEFINIR UN MODULO*/
+var modelos = require("../modelos/modelos.js");
+/*module.exports = DEFINIR UN MODULO*/
 module.exports.CONSTANTE1 = "valor1";
 
 module.exports.configurar = function(app) {
@@ -12,40 +14,38 @@ module.exports.configurar = function(app) {
 		});
 	}
 
+	//
 	function mostrarBlog(request, response, nombreVista) {
 
+		var criteriosBusqueda = {};
+		var limite = request.query.limite;
+		var offset = request.query.offset;
+
+		//TYPEOF: para saber el tipo de dato del objeto
+		if ( typeof limite !== "undefined") {
+			//si el query string limite trae datos, de los pegamos a los criterios de búsqueda
+			criteriosBusqueda.limit = limite;
+		}
+
+		if ( typeof offset !== "undefined") {
+			//si viene en el query string el parametro offset, lo agregamos al criterio de búsqueda
+			criteriosBusqueda.offset = offset;
+		}
 		//AQUI SUPUESTAMENTE YA CONSULTAMOS UNA BASE DE DATOS
 		//OBTENEMOS UN ARREGLO DE RESULTADOS
-		var articulos = [{
-			id : 1,
-			titulo : "articulo 1",
-			contenido : "contenido 1"
-		}, {
-			id : 2,
-			titulo : "articulo 2",
-			contenido : "contenido 2"
-		}, {
-			id : 3,
-			titulo : "articulo 3",
-			contenido : "contenido 3"
-		}];
-
-		var categorias = [{
-			nombre : "categoria 1"
-		}, {
-			nombre : "categoria 2"
-		}, {
-			nombre : "categoria 3"
-		}];
-
-		//articulos= [];
-
-		response.render(nombreVista, {
-			//ASIGNAMOS LA VARIABLE ARTICULOS a articulos
-			articulos : articulos,
-			categorias : categorias
+		modelos.Articulo.findAll(criteriosBusqueda).success(function(articulos) {
+			//Cuando usamos findAll, el método regresa un arreglo de Javascript
+			modelos.Categoria.findAll().success(function(categorias) {
+				response.render(nombreVista, {
+					//ASIGNAMOS LA VARIABLE ARTICULOS a articulos
+					articulos : articulos,
+					categorias : categorias
+				});
+			});
 		});
+
 	}
+
 
 	app.get("/", function(request, response) {
 		mostrarInicio(request, response, "index.html");
@@ -100,9 +100,59 @@ module.exports.configurar = function(app) {
 		response.send(mensaje);
 
 	});
-	
-	app.get("/chat",function(request, response){
+
+	app.get("/chat", function(request, response) {
 		response.render("chat.html");
 	});
 
+	//blog/1
+	//blog/2
+	app.get("/blog/:articuloId([0-9]+)", function(request, response) {
+
+		var articuloId = request.params.articuloId;
+
+		console.log("buscando articulo con id:" + articuloId);
+		modelos.Articulo.find({
+			where : {
+				id : articuloId
+			},
+			include : [{
+				model : modelos.Comentario,
+				as : "comentarios"
+			}, {
+				//Por medio del mapeo N-N accedo a las categorias asociadas a un artículo en particular
+				model : modelos.Categoria,
+				as : "categorias"
+			}]
+		}).success(function(articulo) {
+			//AQUI PONEMOS EL CÓDIGO A EJECUTAR CUANDO YA SE HIZO LA CONSULTA A LA BD
+			response.render("articulo.html", {
+				articulo : articulo
+			});
+
+		});
+	});
+
+	app.get("/usuario/:usuarioId([0-9]+)", function(request, response) {
+
+		var usuarioId = request.params.usuarioId;
+
+		console.log("buscando usuario con id:" + usuarioId);
+		modelos.Usuario.find({
+			//Este bloque trae la asociación de artículos por usuario
+			where : {
+				id : usuarioId
+			},
+			include : [{
+				model : modelos.Articulo,
+				as : "articulos"
+			}]
+		}).success(function(usuario) {
+			//AQUI PONEMOS EL CÓDIGO A EJECUTAR CUANDO YA SE HIZO LA CONSULTA A LA BD
+			response.render("usuario.html", {
+				usuario : usuario
+			});
+
+		});
+	});
 };

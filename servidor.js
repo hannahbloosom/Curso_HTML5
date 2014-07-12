@@ -1,7 +1,6 @@
 //IMPORTAMOS LA LIBRERIA DE EXPRESS
 //MODELO VISTA CONTROLADOR
 
-
 var express = require("express");
 var nunjucks = require("nunjucks");
 //ESTO NO ERA NECESARIO EN LA VERSION 3 DE EXPRESS
@@ -14,7 +13,6 @@ var sanitizer = require("sanitizer");
 
 // ------------------------- LIBRERIA CORE DE NODE -----------------
 var http = require("http");
-
 
 /*---------- IMPORTAMOS NUESTROS MODULOS -------------------*/
 var rutas = require("./rutas/rutas.js");
@@ -52,14 +50,15 @@ app.use(bodyParser());
 
 rutas.configurar(app);
 //SOLUCION EJERCICIO modulos
-modelos.configurar();
+modelos.configurar(function() {
+	//CUANDO LA CONEXIÓN YA ESTÁ LISTA, ESCUCHAMOS PETICIONES DE LOS USUARIOS
+	servidor.listen(8081);
+});
 
 //HABILITA WEBSOCKETS EN EL SERVIDOR CON SOCKET.IO
-//io = me permite escuchar y responder a mis clientes usando 
+//io = me permite escuchar y responder a mis clientes usando
 //websockets
 var io = socketio.listen(servidor);
-
-servidor.listen(8081);
 
 //CUANDO ALGUIEN PONGA http://localhost:8081/
 
@@ -73,48 +72,46 @@ var contadorUsuarios = 0;
 // connection me permite escuchar cuando un cliente se conecta
 // cuando un cliente se conecta, socket.io nos pasa un objeto
 //en la funcion que representa al cliente
-io.sockets.on("connection", function(socket){
-	
-	contadorUsuarios++;	
+io.sockets.on("connection", function(socket) {
+
+	contadorUsuarios++;
 	console.log("SE CONECTO UN CLIENTE");
-	
+
 	//avisamos a todos los clientes que actualice el contador
-	io.sockets.emit("actualiza-contador",{
-		contador:contadorUsuarios
+	io.sockets.emit("actualiza-contador", {
+		contador : contadorUsuarios
 	});
-	
+
 	//disconnect se produce cuando el cliente se desconecta
 	// on = ESCUCHAR UN EVENTO
-	socket.on("disconnect",function(){
-		
+	socket.on("disconnect", function() {
+
 		console.log("se desconecto un cliente!!");
 		contadorUsuarios--;
-		
-		//avisamos a todos los demas usarios que actualicen el contador		
-		io.sockets.emit("actualiza-contador",{
-			contador:contadorUsuarios
+
+		//avisamos a todos los demas usarios que actualicen el contador
+		io.sockets.emit("actualiza-contador", {
+			contador : contadorUsuarios
 		});
-		
+
 	});
-	
-	socket.on("mensaje-al-servidor",function(datosCliente){
-		
+
+	socket.on("mensaje-al-servidor", function(datosCliente) {
+
 		//LIMPIAMOS LOS DATOS DEL CLIENTE DE UN POSIBLE ATAQUE
 		//DE XSS
 		var mensaje = sanitizer.escape(datosCliente.mensaje);
 		var usuario = sanitizer.escape(datosCliente.usuario);
-		
+
 		//console.log("usuario:" + datosCliente.usuario + ", mensaje:" + datosCliente.mensaje);
-		
+
 		//RENVIAMOS DATOS A TODOS LOS CLIENTES
-		io.sockets.emit("mensaje-al-cliente",{
-			mensaje:mensaje,
-			usuario:usuario
-		});		
-		
+		io.sockets.emit("mensaje-al-cliente", {
+			mensaje : mensaje,
+			usuario : usuario
+		});
+
 	});
-	
+
 });
-
-
 

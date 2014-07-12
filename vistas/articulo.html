@@ -1,0 +1,29 @@
+{%extends "layout.html"%}
+
+{%block contenido%}
+<article>
+	<h1> {{articulo.titulo}} </h1>
+	<p>
+		{{articulo.contenido}}
+	</p>
+</article>
+<section>
+	<h2>Comentarios</h2>
+	{%for comentario in articulo.comentarios%}
+	<h3>{{comentario.comentario}}</h3>
+	<p>
+		{{comentario.autor}}
+	</p>
+	<h5>{{comentario.fecha_creacion}}</h5>
+	{%endfor%}
+</section>
+<ul>
+	<b>Categorías del Post</b>
+	{%for categoria in articulo.categorias%}
+	<li>
+		{{categoria.nombre}}
+	</li>
+	{%endfor%}
+</ul>
+{%endblock%}
+

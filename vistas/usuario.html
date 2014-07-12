@@ -1,0 +1,18 @@
+{%extends "layout.html"%}
+
+{%block contenido%}
+<article>
+	<h1>Usuario: {{usuario.nombre}}</h1>
+	<p>
+		<b>Email: </b>{{usuario.email}}
+	</p>
+	<section>
+		<h2>Artículos</h2>
+		{%for articulo in usuario.articulos%}
+		<h3>{{articulo.titulo}}</h3>
+		{%endfor%}
+	</section>
+
+</article>
+{%endblock%}
+
